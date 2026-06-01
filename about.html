@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - DiabetesCare</title>
+    <meta name="description"
+        content="Learn about DiabetesCare - your comprehensive diabetes prediction and health monitoring platform. Advanced AI technology, real-time monitoring, and personalized health insights.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Premium Blue-Teal Theme */
+        :root {
+            --primary-blue: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-darker: #0369a1;
+            --teal-accent: #14b8a6;
+            --teal-light: #2dd4bf;
+            --bg-light: #f0f9ff;
+            --text-primary: #0c4a6e;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-light: #e0f2fe;
+            --shadow-md: 0 4px 6px -1px rgba(14, 165, 233, 0.1), 0 2px 4px -1px rgba(14, 165, 233, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(14, 165, 233, 0.1), 0 4px 6px -2px rgba(14, 165, 233, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(14, 165, 233, 0.15), 0 10px 10px -5px rgba(14, 165, 233, 0.04);
+        }
+
+        .about-hero {
+            background: linear-gradient(135deg, #e6f5fe 0%, #f0f9ff 50%, #f9fcfc 100%);
+            margin-bottom: 3rem;
+            color: #1e40af;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            animation: shimmer 3s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .about-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        .story-section {
+            padding: 5rem 2rem;
+            background: white;
+        }
+
+        .story-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .story-text h2 {
+            color: var(--text-primary);
+            font-size: 2.25rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .story-text h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--teal-accent));
+            border-radius: 2px;
+        }
+
+        .story-text p {
+            color: var(--text-secondary);
+            line-height: 1.9;
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+        }
+
+        .story-image {
+            background: linear-gradient(135deg, var(--bg-light), #ccfbf1);
+            border-radius: 24px;
+            padding: 4rem;
+            text-align: center;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 60%);
+        }
+
+        .story-image i {
+            font-size: 10rem;
+            color: var(--primary-blue);
+            position: relative;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.3));
+            }
+
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 25px rgba(14, 165, 233, 0.5));
+            }
+        }
+
+        .values-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--bg-light), #f0fdfa);
+        }
+
+        .values-section h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--teal-accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .value-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .value-card i {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.25rem;
+            background: var(--bg-light);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .value-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.35rem;
+        }
+
+        .value-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .achievements-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-dark), var(--teal-accent));
+            color: white;
+        }
+
+        .achievements-section h2 {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            font-size: 2.5rem;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .achievement-item {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .achievement-item i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+        }
+
+        .achievement-item .number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-item .label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .technology-section {
+            padding: 5rem 2rem;
+            background: white;
+        }
+
+        .technology-section h2 {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tech-card {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 16px;
+            border-left: 5px solid var(--primary-blue);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tech-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-lg);
+            border-left-color: var(--teal-accent);
+        }
+
+        .tech-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+        }
+
+        .tech-card h3 i {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+        }
+
+        .tech-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .mission {
+            background: linear-gradient(135deg, var(--bg-light), #f0fdfa);
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+            border-radius: 0;
+        }
+
+        .mission-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .mission h2 {
+            text-align: center;
+            font-size: 2.25rem;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .mission-statement {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.9;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            border-left: 5px solid var(--teal-accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .mission-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .mission .value-item {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .mission .value-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .mission .value-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--teal-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            font-size: 1.75rem;
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .mission .value-item h3 {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .mission .value-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .team {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ccfbf1 100%);
+            padding: 5rem 2rem;
+            margin: 2rem 0;
+            border-radius: 0;
+        }
+
+        .team h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .team .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-light);
+        }
+
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .team-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--teal-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .team-member h3 {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .story-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .story-image {
+                height: 250px;
+            }
+
+            .story-image i {
+                font-size: 6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                DiabetesCare
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about" class="active">About</a></li>
+                    <li><a href="/checkup">Health Assessment</a></li>
+                    <li><a href="/book">Book Appointment</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/feedback">Feedback</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- About Hero Section -->
+        <section class="about-hero">
+            <h1>About DiabetesCare</h1>
+            <p>Empowering lives through innovative health technology and personalized diabetes management solutions</p>
+        </section>
+
+        <!-- Our Story Section -->
+        <section class="story-section">
+            <div class="story-content">
+                <div class="story-text">
+                    <h2>Our Story</h2>
+                    <p>DiabetesCare was founded with a simple mission: to make diabetes management accessible, accurate,
+                        and empowering for everyone. What started as a small project by health enthusiasts has grown
+                        into a comprehensive platform serving thousands of users worldwide.</p>
+                    <p>Our team of medical professionals, data scientists, and technology experts came together to
+                        create a solution that combines the power of artificial intelligence with compassionate
+                        healthcare. We believe that everyone deserves access to quality health tools, regardless of
+                        their background or technical expertise.</p>
+                    <p>Today, DiabetesCare continues to evolve, incorporating the latest advancements in machine
+                        learning and healthcare technology to provide the most accurate diabetes risk predictions and
+                        personalized health insights.</p>
+                </div>
+                <div class="story-image">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Values Section -->
+        <section class="values-section">
+            <h2>Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Patient-Centered Care</h3>
+                    <p>Every feature and prediction is designed with the patient's wellbeing as our top priority.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Privacy & Security</h3>
+                    <p>Your health data is protected with enterprise-grade security and encryption.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Innovation</h3>
+                    <p>Continuously improving our AI models and features based on latest research.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community</h3>
+                    <p>Building a supportive community of health-conscious individuals and professionals.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section class="achievements-section">
+            <h2>Our Achievements</h2>
+            <div class="achievements-grid">
+                <div class="achievement-item">
+                    <i class="fas fa-robot"></i>
+                    <span class="number">95%</span>
+                    <span class="label">Prediction Accuracy</span>
+                </div>
+                <div class="achievement-item">
+                    <i class="fas fa-users"></i>
+                    <span class="number">10,000+</span>
+                    <span class="label">Active Users</span>
+                </div>
+                <div class="achievement-item">
+                    <i class="fas fa-hospital-alt"></i>
+                    <span class="number">50+</span>
+                    <span class="label">Partner Clinics</span>
+                </div>
+                <div class="achievement-item">
+                    <i class="fas fa-globe"></i>
+                    <span class="number">25+</span>
+                    <span class="label">Countries Served</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Technology Section -->
+        <section class="technology-section">
+            <h2>Our Technology</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3><i class="fas fa-brain"></i> Machine Learning</h3>
+                    <p>Our advanced ML models are trained on millions of health records, enabling precise diabetes risk
+                        assessments based on multiple health parameters including glucose levels, BMI, blood pressure,
+                        and lifestyle factors.</p>
+                </div>
+                <div class="tech-card">
+                    <h3><i class="fas fa-cloud"></i> Cloud Infrastructure</h3>
+                    <p>Built on scalable cloud infrastructure, our platform ensures 99.9% uptime and secure data storage
+                        with automatic backups and disaster recovery capabilities.</p>
+                </div>
+                <div class="tech-card">
+                    <h3><i class="fas fa-mobile-alt"></i> Mobile-First Design</h3>
+                    <p>Access your health data anytime, anywhere with our responsive mobile application designed for
+                        seamless experience on any device.</p>
+                </div>
+                <div class="tech-card">
+                    <h3><i class="fas fa-lock"></i> HIPAA Compliant</h3>
+                    <p>Our platform adheres to the highest healthcare standards, ensuring your personal health
+                        information is protected and handled with utmost care.</p>
+                </div>
+                <div class="tech-card">
+                    <h3><i class="fas fa-chart-pie"></i> Data Analytics</h3>
+                    <p>Comprehensive health analytics provide actionable insights into your diabetes risk factors and
+                        help track progress over time.</p>
+                </div>
+                <div class="tech-card">
+                    <h3><i class="fas fa-bell"></i> Smart Notifications</h3>
+                    <p>Intelligent alert system keeps you informed about abnormal readings, medication reminders, and
+                        upcoming appointments.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="mission">
+            <div class="mission-content">
+                <h2>Our Mission</h2>
+                <p class="mission-statement">To democratize access to advanced diabetes care through innovative
+                    technology, empowering individuals worldwide to make informed health decisions and live healthier,
+                    more confident lives.</p>
+                <div class="mission-values">
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>AI-Powered Precision</h3>
+                        <p>Advanced machine learning algorithms provide accurate diabetes risk assessments based on
+                            comprehensive health data analysis.</p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Real-Time Monitoring</h3>
+                        <p>Continuous health tracking with instant alerts and insights to help you stay on top of your
+                            wellness journey.</p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3>Personalized Care</h3>
+                        <p>Tailored recommendations and health plans designed specifically for your unique health
+                            profile and goals.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team">
+            <h2>Meet Our Team</h2>
+            <p class="section-subtitle">A dedicated group of health and technology professionals working together to
+                improve lives</p>
+
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Ashish Mehta</h3>
+                    <p>Chief Medical Officer</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Riya Sharma</h3>
+                    <p>Lead Data Scientist</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Priya Singh</h3>
+                    <p>Product Designer</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">DiabetesCare</div>
+            <p>Empowering Health Through Innovation. AI-powered diabetes prediction and monitoring for a healthier
+                tomorrow.</p>
+
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/checkup">Health Assessment</a>
+                <a href="/contact">Contact</a>
+                <a href="/feedback">Feedback</a>
+            </div>
+
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+
+            <p class="footer-copy">&copy; 2025 DiabetesCare. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

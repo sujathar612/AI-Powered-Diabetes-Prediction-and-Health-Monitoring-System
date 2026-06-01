@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Medication - DiabetesCare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">DiabetesCare</a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/checkup">Checkup</a></li>
+                    <li><a href="/monitoring">Monitoring</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/feedback">Feedback</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="form-section">
+            <div class="form-container">
+                <h1><i class="fas fa-pills"></i> Log Medication</h1>
+
+                <form method="POST" class="medication-form">
+                    <div class="form-group">
+                        <label for="medication_name"><i class="fas fa-capsules"></i> Medication Name</label>
+                        <input type="text" id="medication_name" name="medication_name" required placeholder="Enter medication name">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dosage"><i class="fas fa-prescription-bottle"></i> Dosage</label>
+                            <input type="text" id="dosage" name="dosage" required placeholder="e.g., 500mg, 10ml">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="frequency"><i class="fas fa-clock"></i> Frequency</label>
+                            <select id="frequency" name="frequency" required>
+                                <option value="">Select frequency</option>
+                                <option value="once daily">Once Daily</option>
+                                <option value="twice daily">Twice Daily</option>
+                                <option value="three times daily">Three Times Daily</option>
+                                <option value="four times daily">Four Times Daily</option>
+                                <option value="as needed">As Needed</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="time_taken"><i class="fas fa-calendar-alt"></i> Time Taken</label>
+                            <input type="time" id="time_taken" name="time_taken">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="taken"><i class="fas fa-check-square"></i> Status</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="taken" name="taken" checked>
+                                <label for="taken">Medication taken</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="side_effects"><i class="fas fa-exclamation-triangle"></i> Side Effects (if any)</label>
+                        <textarea id="side_effects" name="side_effects" rows="2" placeholder="Describe any side effects experienced..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes"><i class="fas fa-sticky-note"></i> Additional Notes</label>
+                        <textarea id="notes" name="notes" rows="3" placeholder="Any additional notes or observations..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Log Medication
+                        </button>
+                        <a href="/monitoring" class="btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DiabetesCare. All rights reserved.</p>
+    </footer>
+</body>
+</html>

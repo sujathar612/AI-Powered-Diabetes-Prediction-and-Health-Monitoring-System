@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Health Assessment - DiabetesCare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Premium Health Assessment Theme - Blue-Teal Gradient Palette */
+        :root {
+            --primary-blue: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-darker: #0369a1;
+            --teal-accent: #14b8a6;
+            --teal-light: #2dd4bf;
+            --teal-faded: #5eead4;
+            --gradient-start: #0ea5e9;
+            --gradient-end: #14b8a6;
+            --bg-light: #f0f9ff;
+            --bg-card: #ffffff;
+            --text-primary: #0c4a6e;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-light: #e0f2fe;
+            --shadow-sm: 0 1px 2px rgba(14, 165, 233, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(14, 165, 233, 0.1), 0 2px 4px -1px rgba(14, 165, 233, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(14, 165, 233, 0.1), 0 4px 6px -2px rgba(14, 165, 233, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(14, 165, 233, 0.15), 0 10px 10px -5px rgba(14, 165, 233, 0.04);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ccfbf1 100%);
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .logo {
+            background: linear-gradient(135deg, var(--primary-blue), var(--teal-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--primary-blue);
+        }
+
+        /* Main Container */
+        .assessment-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Hero Section */
+        .assessment-hero {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--teal-accent) 100%);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .assessment-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            animation: shimmer 3s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .assessment-hero h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .assessment-hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            position: relative;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+            }
+
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+            }
+        }
+
+        /* Section Headers */
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            color: var(--primary-blue);
+        }
+
+        /* Card Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Premium Card Styling */
+        .tool-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--teal-accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .tool-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .tool-card h3 {
+            color: var(--text-primary);
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .tool-card h3 i {
+            color: var(--primary-blue);
+            font-size: 1.25rem;
+        }
+
+        /* Form Elements */
+        .tool-card label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .tool-card input[type="number"] {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-light);
+            color: var(--text-primary);
+        }
+
+        .tool-card input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+            background: white;
+        }
+
+        .tool-card input[type="number"]::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Buttons */
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--primary-blue), var(--teal-accent));
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--primary-dark), var(--teal-light));
+        }
+
+        /* Results */
+        .result-box {
+            background: linear-gradient(135deg, var(--bg-light), #f0fdfa);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--teal-accent);
+            font-weight: 500;
+            color: var(--text-primary);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-box.normal {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        }
+
+        .result-box.warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+
+        .result-box.danger {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        }
+
+        /* Prediction Section */
+        .prediction-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            margin-top: 2rem;
+        }
+
+        .prediction-section h2 {
+            color: var(--text-primary);
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .prediction-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .prediction-form .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prediction-form label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .prediction-form input {
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-light);
+        }
+
+        .prediction-form input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+            background: white;
+        }
+
+        .btn-predict {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary-dark), var(--teal-accent));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+            background: linear-gradient(135deg, #0369a1, #2dd4bf);
+        }
+
+        /* Prediction Result */
+        .prediction-result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .prediction-result.positive {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 2px solid #fca5a5;
+        }
+
+        .prediction-result.negative {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border: 2px solid #6ee7b7;
+        }
+
+        .prediction-result h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .prediction-result.positive h3 {
+            color: #dc2626;
+        }
+
+        .prediction-result.negative h3 {
+            color: #059669;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .assessment-hero h1 {
+                font-size: 2rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prediction-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                DiabetesCare
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/checkup" class="active">Health Assessment</a></li>
+                    <li><a href="/book">Book Appointment</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/feedback">Feedback</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="assessment-container">
+            <!-- Hero Section -->
+            <section class="assessment-hero">
+                <span class="hero-icon"><i class="fas fa-clipboard-check"></i></span>
+                <h1>Health Assessment</h1>
+                <p>Comprehensive health metrics analysis and personalized diabetes risk prediction powered by advanced
+                    AI</p>
+            </section>
+
+            <!-- Health Tools Section -->
+            <section class="assessment-tools">
+                <h2 class="section-title">
+                    <i class="fas fa-stethoscope"></i>
+                    Health Checkup Tools
+                </h2>
+
+                <div class="tools-grid">
+                    <!-- BMI Calculator -->
+                    <div class="tool-card">
+                        <h3><i class="fas fa-weight"></i> BMI Calculator</h3>
+                        <label for="weight">Weight (kg):</label>
+                        <input type="number" id="weight" placeholder="Enter your weight" step="0.1">
+
+                        <label for="height" style="margin-top: 1rem;">Height (m):</label>
+                        <input type="number" id="height" placeholder="Enter your height" step="0.01">
+
+                        <button class="btn-calculate" onclick="calculateBMI()">
+                            <i class="fas fa-calculator"></i> Calculate BMI
+                        </button>
+                        <div id="bmi-result" class="result-box" style="display: none;"></div>
+                    </div>
+
+                    <!-- Blood Pressure Check -->
+                    <div class="tool-card">
+                        <h3><i class="fas fa-tint"></i> Blood Pressure Category</h3>
+                        <label for="systolic">Systolic (mmHg):</label>
+                        <input type="number" id="systolic" placeholder="Upper reading">
+
+                        <label for="diastolic" style="margin-top: 1rem;">Diastolic (mmHg):</label>
+                        <input type="number" id="diastolic" placeholder="Lower reading">
+
+                        <button class="btn-calculate" onclick="checkBP()">
+                            <i class="fas fa-search"></i> Check Category
+                        </button>
+                        <div id="bp-result" class="result-box" style="display: none;"></div>
+                    </div>
+
+                    <!-- Glucose Level Check -->
+                    <div class="tool-card">
+                        <h3><i class="fas fa-burn"></i> Glucose Level Check</h3>
+                        <label for="glucose-level">Glucose Level (mg/dL):</label>
+                        <input type="number" id="glucose-level" placeholder="Fasting blood sugar">
+
+                        <button class="btn-calculate" onclick="checkGlucose()">
+                            <i class="fas fa-check-circle"></i> Check Level
+                        </button>
+                        <div id="glucose-result" class="result-box" style="display: none;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diabetes Prediction Section -->
+            <section class="prediction-section">
+                <h2><i class="fas fa-brain"></i> Diabetes Risk Prediction</h2>
+                <form action="/predict" method="post" class="prediction-form">
+                    <div class="form-group">
+                        <label for="pregnancies">Number of Pregnancies:</label>
+                        <input type="number" id="pregnancies" name="pregnancies" value="{{ pregnancies or '' }}"
+                            required placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="glucose">Glucose Level:</label>
+                        <input type="number" id="glucose" name="glucose" step="0.1" value="{{ glucose or '' }}" required
+                            placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bloodpressure">Blood Pressure:</label>
+                        <input type="number" id="bloodpressure" name="bloodpressure" step="0.1"
+                            value="{{ bloodpressure or '' }}" required placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="insulin">Insulin Level:</label>
+                        <input type="number" id="insulin" name="insulin" step="0.1" value="{{ insulin or '' }}" required
+                            placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bmi">BMI:</label>
+                        <input type="number" id="bmi" name="bmi" step="0.1" value="{{ bmi or '' }}" required
+                            placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dpf">Diabetes Pedigree Function:</label>
+                        <input type="number" id="dpf" name="dpf" step="0.001" value="{{ dpf or '' }}" required
+                            placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age" value="{{ age or '' }}" required placeholder="0">
+                    </div>
+
+                    <button type="submit" class="btn-predict">
+                        <i class="fas fa-rocket"></i> Analyze Risk
+                    </button>
+                </form>
+
+                {% if prediction_text %}
+                <div class="prediction-result {{ 'positive' if 'Diabetic' in prediction_text else 'negative' }}">
+                    <h3>{{ prediction_text }}</h3>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+                        {{ 'Please consult with a healthcare provider for further evaluation.' if 'Diabetic' in
+                        prediction_text else 'Continue maintaining a healthy lifestyle!' }}
+                    </p>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DiabetesCare. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function calculateBMI() {
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            const resultBox = document.getElementById('bmi-result');
+
+            if (weight && height) {
+                const bmi = (weight / (height * height)).toFixed(2);
+                let category = '';
+                let className = 'result-box';
+
+                if (bmi < 18.5) {
+                    category = 'Underweight';
+                    className += ' warning';
+                } else if (bmi < 25) {
+                    category = 'Normal';
+                    className += ' normal';
+                } else if (bmi < 30) {
+                    category = 'Overweight';
+                    className += ' warning';
+                } else {
+                    category = 'Obese';
+                    className += ' danger';
+                }
+
+                resultBox.className = className;
+                resultBox.innerHTML = `<strong>Your BMI: ${bmi}</strong><br>Category: ${category}`;
+                resultBox.style.display = 'block';
+            }
+        }
+
+        function checkBP() {
+            const systolic = document.getElementById('systolic').value;
+            const diastolic = document.getElementById('diastolic').value;
+            const resultBox = document.getElementById('bp-result');
+
+            if (systolic && diastolic) {
+                let category = '';
+                let className = 'result-box';
+
+                if (systolic < 120 && diastolic < 80) {
+                    category = 'Normal';
+                    className += ' normal';
+                } else if (systolic < 130 && diastolic < 80) {
+                    category = 'Elevated';
+                    className += ' warning';
+                } else if (systolic < 140 || diastolic < 90) {
+                    category = 'High Blood Pressure (Stage 1)';
+                    className += ' warning';
+                } else {
+                    category = 'High Blood Pressure (Stage 2)';
+                    className += ' danger';
+                }
+
+                resultBox.className = className;
+                resultBox.innerHTML = `<strong>Blood Pressure Category:</strong> ${category}`;
+                resultBox.style.display = 'block';
+            }
+        }
+
+        function checkGlucose() {
+            const level = document.getElementById('glucose-level').value;
+            const resultBox = document.getElementById('glucose-result');
+
+            if (level) {
+                let category = '';
+                let className = 'result-box';
+
+                if (level < 70) {
+                    category = 'Low (Hypoglycemia)';
+                    className += ' danger';
+                } else if (level < 100) {
+                    category = 'Normal (Fasting)';
+                    className += ' normal';
+                } else if (level < 126) {
+                    category = 'Prediabetes';
+                    className += ' warning';
+                } else {
+                    category = 'Diabetes';
+                    className += ' danger';
+                }
+
+                resultBox.className = className;
+                resultBox.innerHTML = `<strong>Glucose Level:</strong> ${category}`;
+                resultBox.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+
+</html>

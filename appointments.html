@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Appointments - DiabetesCare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">DiabetesCare</a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/checkup">Health Assessment</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/feedback">Feedback</a></li>
+                    <li><a href="/dashboard" class="active">Dashboard</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="dashboard-section">
+            <h1>My Appointments</h1>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div
+                class="alert alert-{{ 'danger' if category == 'error' else 'info' if category == 'info' else 'success' }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="appointments-actions">
+                <a href="{{ url_for('doctors') }}" class="btn btn-primary">
+                    <i class="fas fa-calendar-plus"></i> Book New Appointment
+                </a>
+            </div>
+
+            {% if appointments %}
+            <div class="appointments-list">
+                {% for appointment in appointments %}
+                <div
+                    class="appointment-card card {% if appointment.status == 'Cancelled' %}cancelled{% elif appointment.status == 'Completed' %}completed{% endif %}">
+                    <div class="appointment-header">
+                        <h3>{{ appointment.doctor.name }}</h3>
+                        <span class="status-badge status-{{ appointment.status.lower() }}">
+                            {{ appointment.status }}
+                        </span>
+                    </div>
+                    <div class="appointment-details">
+                        <p><i class="fas fa-stethoscope"></i> <strong>Specialty:</strong> {{
+                            appointment.doctor.specialty }}</p>
+                        <p><i class="fas fa-calendar-alt"></i> <strong>Date:</strong> {{
+                            appointment.appointment_date.strftime('%B %d, %Y') }}</p>
+                        <p><i class="fas fa-clock"></i> <strong>Time:</strong> {{
+                            appointment.appointment_time.strftime('%I:%M %p') }}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> {{
+                            appointment.doctor.address }}</p>
+                        {% if appointment.notes %}
+                        <p><i class="fas fa-sticky-note"></i> <strong>Notes:</strong> {{ appointment.notes }}</p>
+                        {% endif %}
+                    </div>
+                    {% if appointment.status == 'Scheduled' %}
+                    <div class="appointment-actions">
+                        <form method="POST" action="{{ url_for('cancel_appointment', appointment_id=appointment.id) }}"
+                            style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                <i class="fas fa-times"></i> Cancel Appointment
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-data">
+                <p>You haven't booked any appointments yet.</p>
+                <a href="{{ url_for('doctors') }}" class="btn btn-primary">
+                    <i class="fas fa-calendar-plus"></i> Book Your First Appointment
+                </a>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+
+</html>

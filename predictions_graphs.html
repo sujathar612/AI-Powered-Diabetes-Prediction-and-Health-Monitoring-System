@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prediction Graphs - DiabetesCare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">DiabetesCare</a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/checkup">Checkup</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/feedback">Feedback</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="dashboard-section">
+            <div class="graphs-header">
+                <h1><i class="fas fa-chart-line"></i> Prediction Analysis</h1>
+                <a href="/dashboard" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+
+            <div class="graphs-container">
+                <div class="chart-card">
+                    <h3>Prediction Timeline</h3>
+                    <div id="timeline-chart" class="chart-container"></div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Health Metrics Distribution</h3>
+                    <div id="metrics-chart" class="chart-container"></div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Diabetic vs Non-Diabetic Comparison</h3>
+                    <div id="comparison-chart" class="chart-container"></div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Risk Factors Analysis</h3>
+                    <div id="risk-chart" class="chart-container"></div>
+                </div>
+            </div>
+
+            <div class="prediction-summary card">
+                <h3>Summary Statistics</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <h4>Total Predictions</h4>
+                        <div class="summary-value" id="total-predictions">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <h4>Diabetic Cases</h4>
+                        <div class="summary-value diabetic" id="diabetic-count">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <h4>Non-Diabetic Cases</h4>
+                        <div class="summary-value non-diabetic" id="non-diabetic-count">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <h4>Average Glucose</h4>
+                        <div class="summary-value" id="avg-glucose">-</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Fetch prediction data and create graphs
+        fetch('/api/predictions-data')
+            .then(response => response.json())
+            .then(data => {
+                createTimelineChart(data);
+                createMetricsChart(data);
+                createComparisonChart(data);
+                createRiskChart(data);
+                updateSummary(data);
+            })
+            .catch(error => {
+                console.error('Error fetching prediction data:', error);
+            });
+
+        function createTimelineChart(data) {
+            const diabeticData = data.filter(p => p.result === 'Diabetic');
+            const nonDiabeticData = data.filter(p => p.result === 'Non-Diabetic');
+
+            const trace1 = {
+                x: diabeticData.map(p => p.date),
+                y: diabeticData.map(p => p.glucose),
+                mode: 'lines+markers',
+                name: 'Diabetic',
+                line: { color: '#ef4444' },
+                marker: { color: '#ef4444', size: 8 }
+            };
+
+            const trace2 = {
+                x: nonDiabeticData.map(p => p.date),
+                y: nonDiabeticData.map(p => p.glucose),
+                mode: 'lines+markers',
+                name: 'Non-Diabetic',
+                line: { color: '#10b981' },
+                marker: { color: '#10b981', size: 8 }
+            };
+
+            const layout = {
+                title: 'Glucose Levels Over Time',
+                xaxis: { title: 'Date' },
+                yaxis: { title: 'Glucose Level' },
+                height: 400
+            };
+
+            Plotly.newPlot('timeline-chart', [trace1, trace2], layout);
+        }
+
+        function createMetricsChart(data) {
+            const diabeticData = data.filter(p => p.result === 'Diabetic');
+            const nonDiabeticData = data.filter(p => p.result === 'Non-Diabetic');
+
+            const trace1 = {
+                x: ['Glucose', 'Blood Pressure', 'BMI', 'Age'],
+                y: [
+                    diabeticData.reduce((sum, p) => sum + p.glucose, 0) / diabeticData.length || 0,
+                    diabeticData.reduce((sum, p) => sum + p.bloodpressure, 0) / diabeticData.length || 0,
+                    diabeticData.reduce((sum, p) => sum + p.bmi, 0) / diabeticData.length || 0,
+                    diabeticData.reduce((sum, p) => sum + p.age, 0) / diabeticData.length || 0
+                ],
+                name: 'Diabetic',
+                type: 'bar',
+                marker: { color: '#ef4444' }
+            };
+
+            const trace2 = {
+                x: ['Glucose', 'Blood Pressure', 'BMI', 'Age'],
+                y: [
+                    nonDiabeticData.reduce((sum, p) => sum + p.glucose, 0) / nonDiabeticData.length || 0,
+                    nonDiabeticData.reduce((sum, p) => sum + p.bloodpressure, 0) / nonDiabeticData.length || 0,
+                    nonDiabeticData.reduce((sum, p) => sum + p.bmi, 0) / nonDiabeticData.length || 0,
+                    nonDiabeticData.reduce((sum, p) => sum + p.age, 0) / nonDiabeticData.length || 0
+                ],
+                name: 'Non-Diabetic',
+                type: 'bar',
+                marker: { color: '#10b981' }
+            };
+
+            const layout = {
+                title: 'Average Health Metrics Comparison',
+                barmode: 'group',
+                height: 400
+            };
+
+            Plotly.newPlot('metrics-chart', [trace1, trace2], layout);
+        }
+
+        function createComparisonChart(data) {
+            const diabeticCount = data.filter(p => p.result === 'Diabetic').length;
+            const nonDiabeticCount = data.filter(p => p.result === 'Non-Diabetic').length;
+
+            const trace = {
+                values: [diabeticCount, nonDiabeticCount],
+                labels: ['Diabetic', 'Non-Diabetic'],
+                type: 'pie',
+                marker: {
+                    colors: ['#ef4444', '#10b981']
+                },
+                textinfo: 'label+percent+value',
+                textposition: 'outside'
+            };
+
+            const layout = {
+                title: 'Prediction Results Distribution',
+                height: 400
+            };
+
+            Plotly.newPlot('comparison-chart', [trace], layout);
+        }
+
+        function createRiskChart(data) {
+            const scatterData = data.map(p => ({
+                x: p.age,
+                y: p.bmi,
+                mode: 'markers',
+                name: p.result,
+                marker: {
+                    color: p.result === 'Diabetic' ? '#ef4444' : '#10b981',
+                    size: p.glucose / 10,
+                    sizemode: 'area',
+                    sizeref: 2,
+                    sizemin: 4
+                },
+                text: `Glucose: ${p.glucose}<br>BP: ${p.bloodpressure}<br>Date: ${p.date}`
+            }));
+
+            const layout = {
+                title: 'Age vs BMI (Bubble size = Glucose level)',
+                xaxis: { title: 'Age' },
+                yaxis: { title: 'BMI' },
+                height: 400
+            };
+
+            Plotly.newPlot('risk-chart', scatterData, layout);
+        }
+
+        function updateSummary(data) {
+            document.getElementById('total-predictions').textContent = data.length;
+            document.getElementById('diabetic-count').textContent = data.filter(p => p.result === 'Diabetic').length;
+            document.getElementById('non-diabetic-count').textContent = data.filter(p => p.result === 'Non-Diabetic').length;
+
+            const avgGlucose = data.reduce((sum, p) => sum + p.glucose, 0) / data.length || 0;
+            document.getElementById('avg-glucose').textContent = avgGlucose.toFixed(1);
+        }
+    </script>
+</body>
+</html>
